@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Job Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="report.html">Report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1 class="my-4">List of Jobs</h1>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="selectCategory" class="form-label">Filter by Category:</label>
+            <select class="form-select" id="selectCategory">
+              <option value="All Category">All Category</option>
+              <option value="IT">IT</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="selectLocation" class="form-label">Filter by Location:</label>
+            <select class="form-select" id="selectLocation">
+              <option value="All Location">All Location</option>
+              <option value="New York">New York</option>
+              <option value="San Francisco">San Francisco</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="cardContainer" class="row ">
+
+    </div>
+
+  </main>
+
+
+  <script>
+    const jobs = [
+      {id: 1, title: "Software Engineer", category: "IT", location: "New York", postDate: "2023-01-15", details: "Job description for a software engineer."},
+      {id: 2, title: "Financial Analyst", category: "Finance", location: "San Francisco", postDate: "2023-02-20", details: "Job description for a financial analyst."},
+      {id: 3, title: "Marketing Manager", category: "Marketing", location: "San Francisco", postDate: "2023-04-05", details: "Job description for a marketing manager."}
+    ];
+
+    const cardContainer = document.querySelector('#cardContainer')
+
+    const selectCategory = document.querySelector('#selectCategory')
+
+    const selectLocation = document.querySelector('#selectLocation')
+
+    function generateCard(filteredJobs) {
+      cardContainer.innerHTML = " "
+      for (let i = 0; i < filteredJobs.length; i++) {
+
+        const col = document.createElement('div')
+
+        col.className = 'col-md-6'
+
+        const card = document.createElement('div')
+
+        card.className = 'card'
+
+        const cardHeader = document.createElement('div')
+
+        cardHeader.className = 'card-header'
+
+        cardHeader.innerHTML = `<h2>${filteredJobs[i].title}</h2>`
+
+        const cardBody = document.createElement('div')
+
+        cardBody.className = 'card-body'
+
+        const category = document.createElement('p')
+
+        category.innerHTML = `<strong>Category: </strong>${filteredJobs[i].category}`
+
+        const location = document.createElement('p')
+
+        location.innerHTML = `<strong>Location: </strong>${filteredJobs[i].location}`
+
+        const postDate = document.createElement('p')
+
+        postDate.innerHTML = `<strong>Post Date: </strong>${filteredJobs[i].postDate}`
+
+        const detailsBtn = document.createElement('a')
+
+        detailsBtn.className = 'btn btn-primary'
+
+        detailsBtn.href = `job_details.html?id=${filteredJobs[i].id}`
+
+        detailsBtn.textContent = `Details`
+
+        cardBody.appendChild(category);
+        cardBody.appendChild(location);
+        cardBody.appendChild(postDate);
+        cardBody.appendChild(detailsBtn);
+
+        card.appendChild(cardHeader);
+        card.appendChild(cardBody);
+
+        col.appendChild(card);
+        cardContainer.appendChild(col);
+
+      }
+    }
+
+    selectCategory.addEventListener('change', applyCategoryFilter)
+
+    function applyCategoryFilter() {
+      const selectedCategory = selectCategory.value;
+      const filteredCategory = []
+
+      if (selectedCategory !== "All Category") {
+        for (let i = 0; i < jobs.length; i++) {
+          if (selectedCategory === jobs[i].category) {
+            filteredCategory.push(jobs[i])
+          }
+        }
+        generateCard(filteredCategory)
+      } else {
+        generateCard(jobs)
+      }
+
+    }
+
+    selectLocation.addEventListener('change', applyLocationFilter)
+
+    function applyLocationFilter() {
+      const selectedLocation = selectLocation.value;
+      const filteredLocation = []
+
+      if (selectedLocation !== "All Location") {
+        for (let i = 0; i < jobs.length; i++) {
+          if (selectedLocation === jobs[i].location) {
+            filteredLocation.push(jobs[i])
+          }
+        }
+        generateCard(filteredLocation)
+      } else {
+        generateCard(jobs)
+      }
+
+
+    }
+
+
+    generateCard(jobs)
+
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
